@@ -1,13 +1,13 @@
 {
-  "name": "@fabric/verse",
-  "productName": "Verse",
+  "name": "@rpg/chat",
+  "productName": "RPG Chat",
   "main": "electron_app/src/electron-main.js",
-  "version": "0.1.0-RC2",
-  "description": "virtual universe simulator",
+  "version": "0.1.0-alpha",
+  "description": "chat client for RPG",
   "author": "Fabric Labs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/FabricLabs/chat.verse.im"
+    "url": "https://github.com/RolePlayGateway/chat.verse.im"
   },
   "license": "MIT",
   "files": [

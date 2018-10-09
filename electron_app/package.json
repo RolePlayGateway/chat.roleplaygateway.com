@@ -1,9 +1,9 @@
 {
-  "name": "verse",
-  "productName": "Verse",
+  "name": "rpg",
+  "productName": "RPG Chat",
   "main": "src/electron-main.js",
-  "version": "0.1.0-RC2",
-  "description": "p2p game engine",
+  "version": "0.1.0-alpha",
+  "description": "chat client for RPG",
   "author": "Fabric Labs",
   "dependencies": {
     "auto-launch": "^5.0.1",
