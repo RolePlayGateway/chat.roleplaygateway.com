@@ -30,7 +30,7 @@
     "reskindex:watch": "reskindex -h src/header -w",
     "i18n": "matrix-gen-i18n",
     "prunei18n": "matrix-prune-i18n",
-    "build:all": "npm run clean && npm run build && npm run install:electron && build -wml --x64",
+    "build:all": "npm run clean && npm run build && npm run install:electron && build -wl --x64",
     "build:electron": "npm run build:all",
     "build:res": "node scripts/copy-res.js",
     "build:modernizr": "modernizr -c .modernizr.json -d src/vector/modernizr.js",

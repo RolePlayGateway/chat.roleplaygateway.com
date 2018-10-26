@@ -12,7 +12,7 @@
     "feature_groups": "labs",
     "feature_pinning": "labs"
   },
-  "disable_3pid_login": true,
+  "disable_3pid_login": false,
   "disable_login_language_selector": true,
   "disable_guests": true,
   "disable_custom_urls": true,
