@@ -67,7 +67,7 @@ function initRageshake() {
         console.log("Initialised rageshake: See https://bugs.chromium.org/p/chromium/issues/detail?id=583193 to fix line numbers on Chrome.");
 
         window.addEventListener('beforeunload', (e) => {
-            console.log('verse-web closing');
+            console.log('rpg-web closing');
             // try to flush the logs to indexeddb
             rageshake.flush();
         });

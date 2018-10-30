@@ -28,7 +28,7 @@ remote.autoUpdater.on('update-downloaded', onUpdateDownloaded);
 
 // try to flush the rageshake logs to indexeddb before quit.
 ipcRenderer.on('before-quit', function () {
-    console.log('verse-desktop closing');
+    console.log('rpg-desktop closing');
     rageshake.flush();
 });
 

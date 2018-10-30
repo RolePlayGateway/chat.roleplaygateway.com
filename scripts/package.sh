@@ -21,17 +21,17 @@ npm run build$dev
 cp config.sample.json webapp/
 
 mkdir -p dist
-cp -r webapp verse-$version
+cp -r webapp rpg-$version
 
 # if $version looks like semver with leading v, strip it before writing to file
 if [[ ${version} =~ ^v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+(-.+)?$ ]]; then
-    echo ${version:1} > verse-$version/version
+    echo ${version:1} > rpg-$version/version
 else
-    echo ${version} > verse-$version/version
+    echo ${version} > rpg-$version/version
 fi
 
-tar chvzf dist/verse-$version.tar.gz verse-$version
-rm -r verse-$version
+tar chvzf dist/rpg-$version.tar.gz rpg-$version
+rm -r rpg-$version
 
 echo
-echo "Packaged dist/verse-$version.tar.gz"
+echo "Packaged dist/rpg-$version.tar.gz"

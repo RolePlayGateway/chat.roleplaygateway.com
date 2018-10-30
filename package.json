@@ -7,7 +7,7 @@
   "author": "Fabric Labs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/RolePlayGateway/chat.verse.im"
+    "url": "https://github.com/RolePlayGateway/chat.roleplaygateway.com"
   },
   "license": "MIT",
   "files": [
@@ -30,7 +30,7 @@
     "reskindex:watch": "reskindex -h src/header -w",
     "i18n": "matrix-gen-i18n",
     "prunei18n": "matrix-prune-i18n",
-    "build:all": "npm run clean && npm run build && npm run install:electron && build -wl --x64",
+    "build:all": "npm run clean && npm run build && npm run install:electron && build -wml --x64",
     "build:electron": "npm run build:all",
     "build:res": "node scripts/copy-res.js",
     "build:modernizr": "modernizr -c .modernizr.json -d src/vector/modernizr.js",
@@ -68,8 +68,8 @@
     "gemini-scrollbar": "matrix-org/gemini-scrollbar#b302279",
     "gfm.css": "^1.1.1",
     "highlight.js": "^9.0.0",
-    "matrix-js-sdk": "FabricLabs/matrix-js-sdk#chat.verse.im",
-    "matrix-react-sdk": "FabricLabs/matrix-react-sdk#chat.verse.im",
+    "matrix-js-sdk": "FabricLabs/matrix-js-sdk#chat.roleplaygateway.com",
+    "matrix-react-sdk": "FabricLabs/matrix-react-sdk#chat.roleplaygateway.com",
     "modernizr": "^3.1.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.0",
@@ -146,7 +146,7 @@
     "olm": "https://matrix.org/packages/npm/olm/olm-2.2.1.tgz"
   },
   "build": {
-    "appId": "im.verse.chat",
+    "appId": "com.roleplaygateway.chat",
     "electronVersion": "2.0.8",
     "asar": false,
     "files": [
@@ -169,9 +169,9 @@
         }
       ],
       "category": "Network;InstantMessaging;Chat",
-      "maintainer": "labs@fabric.pub",
+      "maintainer": "dev@roleplaygateway.com",
       "desktop": {
-        "StartupWMClass": "verse"
+        "StartupWMClass": "RPG"
       }
     },
     "win": {
