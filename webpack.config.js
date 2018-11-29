@@ -13,7 +13,7 @@ module.exports = {
         "bundle": ["babel-polyfill", "./src/vector/index.js"],
         "indexeddb-worker": "./src/vector/indexeddb-worker.js",
 
-        "mobileguide": "./src/vector/mobile_guide/index.js",
+        "mobileguide": "./res/releases/index.js",
 
         // CSS themes
         "theme-light":  "./node_modules/matrix-react-sdk/res/themes/light/css/light.scss",
@@ -138,8 +138,8 @@ module.exports = {
             },
         }),
         new HtmlWebpackPlugin({
-            template: './src/vector/mobile_guide/index.html',
-            filename: 'mobile_guide/index.html',
+            template: './res/releases/index.html',
+            filename: 'releases/index.html',
             chunks: ['mobileguide'],
         }),
     ],
