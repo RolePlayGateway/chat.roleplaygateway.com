@@ -3,8 +3,8 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-let og_image_url = process.env.RIOT_OG_IMAGE_URL;
-if (!og_image_url) og_image_url = 'https://riot.im/app/themes/riot/img/logos/riot-im-logo-1.png';
+let og_image_url = process.env.VERSE_OG_IMAGE_URL;
+if (!og_image_url) og_image_url = 'https://chat.verse.im/images/verse-thumbnail.png';
 
 module.exports = {
     entry: {
@@ -13,12 +13,13 @@ module.exports = {
         "bundle": ["babel-polyfill", "./src/vector/index.js"],
         "indexeddb-worker": "./src/vector/indexeddb-worker.js",
 
-        "mobileguide": "./src/vector/mobile_guide/index.js",
+        "releases": "./res/releases/index.js",
 
         // CSS themes
-        "theme-light":  "./node_modules/matrix-react-sdk/res/themes/light/css/light.scss",
-        "theme-dark":   "./node_modules/matrix-react-sdk/res/themes/dark/css/dark.scss",
-        "theme-status": "./res/themes/status/css/status.scss",
+        // "theme-light":  "./node_modules/matrix-react-sdk/res/themes/light/css/light.scss",
+        // "theme-dark":   "./node_modules/matrix-react-sdk/res/themes/dark/css/dark.scss",
+        // "theme-status": "./res/themes/status/css/status.scss",
+        "theme-rpg": "./res/themes/rpg/css/rpg.scss"
     },
     module: {
         rules: [
@@ -132,15 +133,15 @@ module.exports = {
             // bottom of <head> or the bottom of <body>, and I'm a bit scared
             // about moving them.
             inject: false,
-            excludeChunks: ['mobileguide'],
+            excludeChunks: ['releases'],
             vars: {
                 og_image_url: og_image_url,
             },
         }),
         new HtmlWebpackPlugin({
-            template: './src/vector/mobile_guide/index.html',
-            filename: 'mobile_guide/index.html',
-            chunks: ['mobileguide'],
+            template: './res/releases/index.html',
+            filename: 'releases/index.html',
+            chunks: ['releases'],
         }),
     ],
     devtool: 'source-map',

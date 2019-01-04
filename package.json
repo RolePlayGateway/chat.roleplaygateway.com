@@ -1,10 +1,10 @@
 {
-  "name": "riot-web",
-  "productName": "Riot",
+  "name": "@rpg/chat",
+  "productName": "RPG Chat",
   "main": "electron_app/src/electron-main.js",
-  "version": "0.17.8",
-  "description": "A feature-rich client for Matrix.org",
-  "author": "New Vector Ltd.",
+  "version": "0.1.0-dev",
+  "description": "Official client for RPG Chat.",
+  "author": "Quill, Inc. ",
   "repository": {
     "type": "git",
     "url": "https://github.com/vector-im/riot-web"
@@ -38,6 +38,9 @@
     "build:electron": "npm run clean && npm run build && npm run install:electron && build -wml --ia32 --x64",
     "build:react-sdk": "node scripts/npm-sub.js matrix-react-sdk run build",
     "build:js-sdk": "node scripts/npm-sub.js matrix-js-sdk run start:init",
+    "build:linux": "npm run clean && npm run build && npm run install:electron && build -l --x64",
+    "build:mac": "npm run clean && npm run build && npm run install:electron && build -m --x64",
+    "build:windows": "npm run clean && npm run build && npm run install:electron && build -w --x64",
     "build": "npm run build:js-sdk && npm run build:react-sdk && npm run reskindex && npm run build:res && npm run build:bundle",
     "build:dev": "npm run build:js-sdk && npm run build:react-sdk && npm run reskindex && npm run build:res && npm run build:bundle:dev",
     "dist": "scripts/package.sh",
@@ -149,7 +152,7 @@
     "olm": "https://matrix.org/packages/npm/olm/olm-3.0.0.tgz"
   },
   "build": {
-    "appId": "im.riot.app",
+    "appId": "com.roleplaygateway.chat",
     "electronVersion": "3.0.10",
     "files": [
       "node_modules/**",
@@ -160,11 +163,20 @@
       "webapp/**/*"
     ],
     "linux": {
-      "target": "deb",
+      "target": [
+        {
+          "target": "deb",
+          "arch": "x64"
+        },
+        {
+          "target": "rpm",
+          "arch": "x64"
+        }
+      ],
       "category": "Network;InstantMessaging;Chat",
-      "maintainer": "support@riot.im",
+      "maintainer": "support@roleplaygateway.com",
       "desktop": {
-        "StartupWMClass": "riot"
+        "StartupWMClass": "rpg"
       }
     },
     "mac": {
