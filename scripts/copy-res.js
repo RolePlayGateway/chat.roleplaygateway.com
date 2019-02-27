@@ -50,10 +50,11 @@ const INCLUDE_LANGS = [
 // "dest/b/...".
 const COPY_LIST = [
     ["res/manifest.json", "webapp"],
+    ["res/home.html", "webapp"],
     ["res/welcome.html", "webapp"],
     ["res/welcome/**", "webapp/welcome"],
     ["res/themes/**", "webapp/themes"],
-    ["res/vector-icons/**", "webapp/vector-icons"],
+    ["res/rpg-icons/**", "webapp/rpg-icons"],
     ["node_modules/matrix-react-sdk/res/media/**", "webapp/media"],
     ["node_modules/emojione/assets/svg/*", "webapp/emojione/svg/"],
     ["node_modules/emojione/assets/png/*", "webapp/emojione/png/"],

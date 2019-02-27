@@ -29,10 +29,10 @@ module.exports = React.createClass({
     render: function() {
         return (
             <div className="mx_AuthFooter">
-                <a href="https://medium.com/@RiotChat" target="_blank" rel="noopener">blog</a>
-                <a href="https://twitter.com/@RiotChat" target="_blank" rel="noopener">twitter</a>
-                <a href="https://github.com/vector-im/riot-web" target="_blank" rel="noopener">github</a>
-                <a href="https://matrix.org" target="_blank" rel="noopener">{ _t('powered by Matrix') }</a>
+                <a href="https://github.com/RolePlayGateway" rel="noopener"><code>git://</code></a>
+                <a href="https://twitter.com/RolePlayGateway" rel="noopener">@RolePlayGateway</a>
+                <a href="https://medium.com/universes" rel="noopener">/universes</a>
+                <a href="https://www.roleplaygateway.com" rel="noopener">Home</a>
             </div>
         );
     },

@@ -1,13 +1,13 @@
 {
-  "name": "riot-web",
-  "productName": "Riot",
+  "name": "@rpg/chat",
+  "productName": "RPG Chat",
   "main": "electron_app/src/electron-main.js",
-  "version": "1.0.1",
-  "description": "A feature-rich client for Matrix.org",
-  "author": "New Vector Ltd.",
+  "version": "0.1.0-dev",
+  "description": "Desktop client for RPG Chat.",
+  "author": "Fabric Labs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vector-im/riot-web"
+    "url": "https://github.com/roleplaygateway/chat.roleplaygateway.com"
   },
   "license": "Apache-2.0",
   "files": [
@@ -30,12 +30,16 @@
     "reskindex:watch": "reskindex -h src/header -w",
     "i18n": "matrix-gen-i18n",
     "prunei18n": "matrix-prune-i18n",
+    "build:all": "npm run build:electron",
     "build:res": "node scripts/copy-res.js",
     "build:modernizr": "modernizr -c .modernizr.json -d src/vector/modernizr.js",
     "build:compile": "npm run reskindex && babel --source-maps -d lib src",
     "build:bundle": "cross-env NODE_ENV=production webpack -p --progress --bail --mode production",
     "build:bundle:dev": "webpack --progress --bail --mode development",
     "build:electron": "npm run clean && npm run build && npm run install:electron && build -wml --ia32 --x64",
+    "build:linux": "npm run clean && npm run build && npm run install:electron && build -l --ia32 --x64",
+    "build:mac": "npm run clean && npm run build && npm run install:electron && build -m --ia32 --x64",
+    "build:windows": "npm run clean && npm run build && npm run install:electron && build -w --ia32 --x64",
     "build:react-sdk": "node scripts/npm-sub.js matrix-react-sdk run build",
     "build:js-sdk": "node scripts/npm-sub.js matrix-js-sdk run start:init",
     "build": "npm run build:js-sdk && npm run build:react-sdk && npm run reskindex && npm run build:res && npm run build:bundle",
@@ -60,6 +64,7 @@
     "test-multi": "karma start"
   },
   "dependencies": {
+    "@fabric/core": "FabricLabs/fabric#pruning",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "bluebird": "^3.5.2",
@@ -162,11 +167,20 @@
       "origin_migrator/**/*"
     ],
     "linux": {
-      "target": "deb",
+      "target": [
+        {
+          "target": "deb",
+          "arch": "x64"
+        },
+        {
+          "target": "rpm",
+          "arch": "x64"
+        }
+      ],
       "category": "Network;InstantMessaging;Chat",
-      "maintainer": "support@riot.im",
+      "maintainer": "dev@roleplaygateway.com",
       "desktop": {
-        "StartupWMClass": "riot"
+        "StartupWMClass": "rpg-chat"
       }
     },
     "mac": {
