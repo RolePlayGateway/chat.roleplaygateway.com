@@ -19,8 +19,9 @@
   "disable_custom_urls": true,
   "roomDirectory": {
     "servers": [
+      "fabric.pub",
       "roleplaygateway.com",
-      "fabric.pub"
+      "matrix.org"
     ]
   },
   "embeddedPages": {
