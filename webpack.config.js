@@ -61,7 +61,17 @@ module.exports = {
                 }),
             },
             {
-                test: /\.(gif|png|svg|ttf)$/,
+                // cache-bust languages.json file placed in
+                // riot-web/webapp/i18n during build by copy-res.js
+                test: /\.*languages.json$/,
+                type: "javascript/auto",
+                loader: 'file-loader',
+                options: {
+                    name: 'i18n/[name].[hash:7].[ext]',
+                },
+            },
+            {
+                test: /\.(gif|png|svg|ttf|xml|ico)$/,
                 // Use a content-based hash in the name so that we can set a long cache
                 // lifetime for assets while still delivering changes quickly.
                 oneOf: [
@@ -133,14 +143,17 @@ module.exports = {
     },
     resolve: {
         alias: {
-            // alias any requires to the react module to the one in our path, otherwise
-            // we tend to get the react source included twice when using npm link.
+            // alias any requires to the react module to the one in our path,
+            // otherwise we tend to get the react source included twice when
+            // using `npm link` / `yarn link`.
             "react": path.resolve('./node_modules/react'),
             "react-dom": path.resolve('./node_modules/react-dom'),
             "react-addons-perf": path.resolve('./node_modules/react-addons-perf'),
 
             // same goes for js-sdk
             "matrix-js-sdk": path.resolve('./node_modules/matrix-js-sdk'),
+
+            "$webapp": path.resolve('./webapp'),
         },
     },
     plugins: [
@@ -149,7 +162,6 @@ module.exports = {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),
             },
         }),
-
         new ExtractTextPlugin("bundles/[hash]/[name].css", {
             allChunks: true,
         }),
