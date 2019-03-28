@@ -1,3 +1,10 @@
+'use strict';
+
+const Fabric = require('@fabric/core');
+const fabric = new Fabric();
+
+console.log('[FABRIC]', 'ready:', fabric);
+
 /*
 Copyright 2015, 2016 OpenMarket Ltd
 Copyright 2017 Vector Creations Ltd
