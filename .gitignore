@@ -10,8 +10,9 @@
 /packages/
 /webapp
 /.npmrc
+/*.log
+package-lock.json
 .DS_Store
-npm-debug.log
 electron/dist
 electron/pub
 **/.idea
@@ -19,3 +20,4 @@ electron/pub
 /config.json.*
 /config.local*.json
 /src/component-index.js
+/.tmp

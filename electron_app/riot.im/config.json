@@ -6,9 +6,11 @@
     "integrations_ui_url": "https://scalar.vector.im/",
     "integrations_rest_url": "https://scalar.vector.im/api",
     "integrations_widgets_urls": [
+        "https://scalar-staging.vector.im/api",
         "https://scalar-staging.riot.im/scalar/api",
         "https://scalar.vector.im/api"
     ],
+    "hosting_signup_link": "https://modular.im/?utm_source=riot-web&utm_medium=web",
     "bug_report_endpoint_url": "https://riot.im/bugreports/submit",
     "welcomeUserId": "@riot-bot:matrix.org",
     "roomDirectory": {
@@ -20,6 +22,15 @@
         "url": "https://piwik.riot.im/",
         "siteId": 1,
         "policyUrl": "https://matrix.org/docs/guides/riot_im_cookie_policy"
+    },
+    "phasedRollOut": {
+        "feature_lazyloading": {
+            "offset": 1539684000000,
+            "period": 604800000
+        }
+    },
+    "features": {
+        "feature_lazyloading": "enable"
     },
     "enable_presence_by_hs_url": {
         "https://matrix.org": false

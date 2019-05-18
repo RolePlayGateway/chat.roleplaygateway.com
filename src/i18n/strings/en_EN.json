@@ -1,13 +1,21 @@
 {
-    "Riot is not supported on mobile web. Install the app?": "Verse works best when running on your own device.  Install the app?",
-    "Grove is not supported on mobile web. Install the app?": "Verse works best when running on your own device.  Install the app?",
-    "Riot Desktop on %(platformName)s": "Verse Desktop on %(platformName)s",
-    "Grove Desktop on %(platformName)s": "Verse Desktop on %(platformName)s",
+    "Riot Desktop on %(platformName)s": "RPG Chat on %(platformName)s",
     "Unknown device": "Unknown device",
     "%(appName)s via %(browserName)s on %(osName)s": "%(appName)s via %(browserName)s on %(osName)s",
     "You need to be using HTTPS to place a screen-sharing call.": "You need to be using HTTPS to place a screen-sharing call.",
+    "powered by Matrix": "powered by Fabric",
     "Custom Server Options": "Custom Server Options",
-    "You can use the custom server options to sign into other Matrix servers by specifying a different Home server URL.<br/>This allows you to use Riot with an existing Matrix account on a different home server.<br/><br/>You can also set a custom identity server but you won't be able to invite users by email address, or be invited by email address yourself.": "You can use the custom server options to sign into other homeservers by specifying a different Homeserver URL.",
+    "You can use the custom server options to sign into other Matrix servers by specifying a different homeserver URL. This allows you to use Riot with an existing Matrix account on a different homeserver.": "You can use the custom server options to sign into other servers by specifying a different server URL. This allows you to use RPG Chat with an existing Fabric account on a different homeserver.",
+    "You can also set a custom identity server, but you won't be able to invite users by email address, or be invited by email address yourself.": "",
     "Dismiss": "Dismiss",
-    "Search the room directory": "Search the room directory"
+    "Welcome to Riot.im": "Welcome to RPG Chat",
+    "Decentralised, encrypted chat &amp; collaboration powered by [matrix]": "Welcome home, traveler.",
+    "Sign In": "Sign In",
+    "Create Account": "Create Account",
+    "Need help?": "Need help?",
+    "Chat with Riot Bot": "Chat with Aura",
+    "Explore rooms": "Explore rooms",
+    "Room Directory": "Room Directory",
+    "Search the room directory": "Search the room directory",
+    "Get started with some tips from Riot Bot!": "Get started with some tips from Aura!"
 }
