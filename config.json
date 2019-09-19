@@ -1,8 +1,8 @@
 {
   "brand": "RPG Chat",
   "default_theme": "dark",
-  "default_hs_url": "https://fabric.pub",
-  "default_is_url": "https://vector.im",
+  "default_hs_url": "https://chat.roleplaygateway.com",
+  "default_is_url": "https://chat.roleplaygateway.com",
   "integrations_ui_url": "https://scalar.fabric.pub",
   "integrations_rest_url": "https://scalar.fabric.pub",
   "bug_report_endpoint_url": "https://chat.fabric.pub/bugs",
@@ -19,9 +19,8 @@
   "disable_custom_urls": true,
   "roomDirectory": {
     "servers": [
-      "fabric.pub",
       "roleplaygateway.com",
-      "matrix.org"
+      "fabric.pub"
     ]
   },
   "embeddedPages": {
