@@ -101,7 +101,7 @@
     "electron-builder": "^20.19.2",
     "electron-devtools-installer": "^2.2.0",
     "emojione": "^2.2.7",
-    "eslint": "^3.14.0",
+    "eslint": "^6.6.0",
     "eslint-config-google": "^0.7.1",
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-flowtype": "^2.30.0",
