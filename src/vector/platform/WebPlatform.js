@@ -26,7 +26,7 @@ import Promise from 'bluebird';
 import url from 'url';
 import UAParser from 'ua-parser-js';
 
-var POKE_RATE_MS = 10 * 60 * 1000; // 10 min
+const POKE_RATE_MS = 10 * 60 * 1000; // 10 min
 
 export default class WebPlatform extends VectorBasePlatform {
     constructor() {
@@ -76,15 +76,13 @@ export default class WebPlatform extends VectorBasePlatform {
     }
 
     displayNotification(title: string, msg: string, avatarUrl: string, room: Object) {
-        const notification = new global.Notification(
-            title,
-            {
-                body: msg,
-                icon: avatarUrl,
-                tag: "vector",
-                silent: true, // we play our own sounds
-            },
-        );
+        const notifBody = {
+            body: msg,
+            tag: "vector",
+            silent: true, // we play our own sounds
+        };
+        if (avatarUrl) notifBody['icon'] = avatarUrl;
+        const notification = new global.Notification(title, notifBody);
 
         notification.onclick = function() {
             dis.dispatch({
@@ -140,6 +138,10 @@ export default class WebPlatform extends VectorBasePlatform {
     startUpdater() {
         this.pollForUpdate();
         setInterval(this.pollForUpdate.bind(this), POKE_RATE_MS);
+    }
+
+    async canSelfUpdate(): boolean {
+        return true;
     }
 
     pollForUpdate() {

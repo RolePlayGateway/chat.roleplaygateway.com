@@ -1,7 +1,8 @@
 /*
 Copyright 2015, 2016 OpenMarket Ltd
 Copyright 2017 Vector Creations Ltd
-Copyright 2018 New Vector Ltd
+Copyright 2018, 2019 New Vector Ltd
+Copyright 2019 Michael Telatynski <7t3chguy@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -24,43 +25,43 @@ require('gfm.css/gfm.css');
 require('highlight.js/styles/github.css');
 require('draft-js/dist/Draft.css');
 
+import olmWasmPath from 'olm/olm.wasm';
+
 import './rageshakesetup';
 
 import React from 'react';
 // add React and ReactPerf to the global namespace, to make them easier to
 // access via the console
 global.React = React;
-if (process.env.NODE_ENV !== 'production') {
-    global.Perf = require('react-addons-perf');
-}
 
-import RunModernizrTests from './modernizr'; // this side-effects a global
+import './modernizr';
 import ReactDOM from 'react-dom';
 import sdk from 'matrix-react-sdk';
 import PlatformPeg from 'matrix-react-sdk/lib/PlatformPeg';
 sdk.loadSkin(require('../component-index'));
 import VectorConferenceHandler from 'matrix-react-sdk/lib/VectorConferenceHandler';
 import Promise from 'bluebird';
-import request from 'browser-request';
 import * as languageHandler from 'matrix-react-sdk/lib/languageHandler';
-// Also import _t directly so we can call it just `_t` as this is what gen-i18n.js expects
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
+import {_t, _td, newTranslatableError} from 'matrix-react-sdk/lib/languageHandler';
+import AutoDiscoveryUtils from 'matrix-react-sdk/lib/utils/AutoDiscoveryUtils';
+import {AutoDiscovery} from "matrix-js-sdk/lib/autodiscovery";
+import * as Lifecycle from "matrix-react-sdk/lib/Lifecycle";
 
 import url from 'url';
 
 import {parseQs, parseQsFromFragment} from './url_utils';
-import Platform from './platform';
+
+import ElectronPlatform from './platform/ElectronPlatform';
+import WebPlatform from './platform/WebPlatform';
 
 import MatrixClientPeg from 'matrix-react-sdk/lib/MatrixClientPeg';
-import SettingsStore, {SettingLevel} from "matrix-react-sdk/lib/settings/SettingsStore";
+import SettingsStore from "matrix-react-sdk/lib/settings/SettingsStore";
 import Tinter from 'matrix-react-sdk/lib/Tinter';
 import SdkConfig from "matrix-react-sdk/lib/SdkConfig";
 
 import Olm from 'olm';
 
 import CallHandler from 'matrix-react-sdk/lib/CallHandler';
-
-import {getVectorConfig} from './getconfig';
 
 let lastLocationHashSet = null;
 
@@ -73,12 +74,12 @@ function checkBrowserFeatures(featureList) {
         console.error("Cannot check features - Modernizr global is missing.");
         return false;
     }
-    var featureComplete = true;
-    for (var i = 0; i < featureList.length; i++) {
+    let featureComplete = true;
+    for (let i = 0; i < featureList.length; i++) {
         if (window.Modernizr[featureList[i]] === undefined) {
             console.error(
                 "Looked for feature '%s' but Modernizr has no results for this. " +
-                "Has it been configured correctly?", featureList[i]
+                "Has it been configured correctly?", featureList[i],
             );
             return false;
         }
@@ -99,7 +100,7 @@ function getScreenFromLocation(location) {
     return {
         screen: fragparts.location.substring(1),
         params: fragparts.params,
-    }
+    };
 }
 
 // Here, we do some crude URL analysis to allow
@@ -113,7 +114,7 @@ function routeUrl(location) {
 }
 
 function onHashChange(ev) {
-    if (decodeURIComponent(window.location.hash) == lastLocationHashSet) {
+    if (decodeURIComponent(window.location.hash) === lastLocationHashSet) {
         // we just set this: no need to route it!
         return;
     }
@@ -124,10 +125,10 @@ function onHashChange(ev) {
 // so a web page can update the URL bar appropriately.
 function onNewScreen(screen) {
     console.log("newscreen "+screen);
-    var hash = '#/' + screen;
+    const hash = '#/' + screen;
     lastLocationHashSet = hash;
     window.location.hash = hash;
-};
+}
 
 // We use this to work out what URL the SDK should
 // pass through when registering to allow the user to
@@ -140,7 +141,7 @@ function onNewScreen(screen) {
 // so in that instance, hardcode to use riot.im/app for now instead.
 function makeRegistrationUrl(params) {
     let url;
-    if (window.location.protocol === "file:") {
+    if (window.location.protocol === "vector:") {
         url = 'https://riot.im/app/#/register';
     } else {
         url = (
@@ -153,7 +154,7 @@ function makeRegistrationUrl(params) {
 
     const keys = Object.keys(params);
     for (let i = 0; i < keys.length; ++i) {
-        if (i == 0) {
+        if (i === 0) {
             url += '?';
         } else {
             url += '&';
@@ -164,51 +165,26 @@ function makeRegistrationUrl(params) {
     return url;
 }
 
-function getConfig(configJsonFilename) {
-    return new Promise(function(resolve, reject) {
-        request(
-            { method: "GET", url: configJsonFilename },
-            (err, response, body) => {
-                if (err || response.status < 200 || response.status >= 300) {
-                    // Lack of a config isn't an error, we should
-                    // just use the defaults.
-                    // Also treat a blank config as no config, assuming
-                    // the status code is 0, because we don't get 404s
-                    // from file: URIs so this is the only way we can
-                    // not fail if the file doesn't exist when loading
-                    // from a file:// URI.
-                    if (response) {
-                        if (response.status == 404 || (response.status == 0 && body == '')) {
-                            resolve({});
-                        }
-                    }
-                    reject({err: err, response: response});
-                    return;
-                }
-
-                // We parse the JSON ourselves rather than use the JSON
-                // parameter, since this throws a parse error on empty
-                // which breaks if there's no config.json and we're
-                // loading from the filesystem (see above).
-                resolve(JSON.parse(body));
-            },
-        );
-    });
-}
-
 function onTokenLoginCompleted() {
     // if we did a token login, we're now left with the token, hs and is
     // url as query params in the url; a little nasty but let's redirect to
     // clear them.
-    var parsedUrl = url.parse(window.location.href);
+    const parsedUrl = url.parse(window.location.href);
     parsedUrl.search = "";
-    var formatted = url.format(parsedUrl);
+    const formatted = url.format(parsedUrl);
     console.log("Redirecting to " + formatted + " to drop loginToken " +
                 "from queryparams");
     window.location.href = formatted;
 }
 
 async function loadApp() {
+    if (window.vector_indexeddb_worker_script === undefined) {
+        // If this is missing, something has probably gone wrong with
+        // the bundling. The js-sdk will just fall back to accessing
+        // indexeddb directly with no worker script, but we want to
+        // make sure the indexeddb script is present, so fail hard.
+        throw new Error("Missing indexeddb worker script!");
+    }
     MatrixClientPeg.setIndexedDbWorkerScript(window.vector_indexeddb_worker_script);
     CallHandler.setConferenceHandler(VectorConferenceHandler);
 
@@ -216,27 +192,50 @@ async function loadApp() {
 
     await loadOlm();
 
-    await loadLanguage();
+    // set the platform for react sdk
+    if (window.ipcRenderer) {
+        console.log("Using Electron platform");
+        const plaf = new ElectronPlatform();
+        PlatformPeg.set(plaf);
 
-    const fragparts = parseQsFromFragment(window.location);
-    const params = parseQs(window.location);
+        // Electron only: see if we need to do a one-time data
+        // migration
+        if (window.localStorage.getItem('mx_user_id') === null) {
+            console.log("Migrating session from old origin...");
+            await plaf.migrateFromOldOrigin();
+            console.log("Origin migration complete");
+        }
+    } else {
+        console.log("Using Web platform");
+        PlatformPeg.set(new WebPlatform());
+    }
 
-    // set the platform for react sdk (our Platform object automatically picks the right one)
-    PlatformPeg.set(new Platform());
+    const platform = PlatformPeg.get();
 
-    // Load the config file. First try to load up a domain-specific config of the
-    // form "config.$domain.json" and if that fails, fall back to config.json.
     let configJson;
     let configError;
+    let configSyntaxError = false;
     try {
-        configJson = await getVectorConfig();
+        configJson = await platform.getConfig();
     } catch (e) {
         configError = e;
+
+        if (e && e.err && e.err instanceof SyntaxError) {
+            console.error("SyntaxError loading config:", e);
+            configSyntaxError = true;
+            configJson = {}; // to prevent errors between here and loading CSS for the error box
+        }
     }
 
     // XXX: We call this twice, once here and once in MatrixChat as a prop. We call it here to ensure
     // granular settings are loaded correctly and to avoid duplicating the override logic for the theme.
     SdkConfig.put(configJson);
+
+    // Load language after loading config.json so that settingsDefaults.language can be applied
+    await loadLanguage();
+
+    const fragparts = parseQsFromFragment(window.location);
+    const params = parseQs(window.location);
 
     // don't try to redirect to the native apps if we're
     // verifying a 3pid (but after we've loaded the config)
@@ -248,7 +247,7 @@ async function loadApp() {
         const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         const isAndroid = /Android/.test(navigator.userAgent);
         if (isIos || isAndroid) {
-            if (!document.cookie.split(';').some((c) => c.startsWith('mobile_redirect_to_guide'))) {
+            if (document.cookie.indexOf("riot_mobile_redirect_to_guide=false") === -1) {
                 window.location = "mobile_guide/";
                 return;
             }
@@ -256,7 +255,6 @@ async function loadApp() {
     }
 
     // as quickly as we possibly can, set a default theme...
-    const styleElements = Object.create(null);
     let a;
     const theme = SettingsStore.getValue("theme");
     for (let i = 0; (a = document.getElementsByTagName("link")[i]); i++) {
@@ -280,7 +278,7 @@ async function loadApp() {
                 // in case it is the first time loading Riot.
                 // `InstallTrigger` is a Object which only exists on Firefox
                 // (it is used for their Plugins) and can be used as a
-                // feature check. 
+                // feature check.
                 // Firefox loads css always before js. This is why we dont use
                 // onload or it's EventListener as thoose will never trigger.
                 if (typeof InstallTrigger !== 'undefined') {
@@ -302,6 +300,33 @@ async function loadApp() {
         }
     }
 
+    // Now that we've loaded the theme (CSS), display the config syntax error if needed.
+    if (configSyntaxError) {
+        const errorMessage = (
+            <div>
+                <p>
+                    {_t(
+                        "Your Riot configuration contains invalid JSON. Please correct the problem " +
+                        "and reload the page.",
+                    )}
+                </p>
+                <p>
+                    {_t(
+                        "The message from the parser is: %(message)s",
+                        {message: configError.err.message || _t("Invalid JSON")},
+                    )}
+                </p>
+            </div>
+        );
+
+        const GenericErrorPage = sdk.getComponent("structures.GenericErrorPage");
+        window.matrixChat = ReactDOM.render(
+            <GenericErrorPage message={errorMessage} title={_t("Your Riot is misconfigured")} />,
+            document.getElementById('matrixchat'),
+        );
+        return;
+    }
+
     const validBrowser = checkBrowserFeatures([
         "displaytable", "flexbox", "es5object", "es5function", "localstorage",
         "objectfit", "indexeddb", "webworkers",
@@ -309,42 +334,58 @@ async function loadApp() {
 
     const acceptInvalidBrowser = window.localStorage && window.localStorage.getItem('mx_accepts_unsupported_browser');
 
-    console.log("Vector starting at "+window.location);
+    const urlWithoutQuery = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    console.log("Vector starting at " + urlWithoutQuery);
     if (configError) {
         window.matrixChat = ReactDOM.render(<div className="error">
             Unable to load config file: please refresh the page to try again.
         </div>, document.getElementById('matrixchat'));
     } else if (validBrowser || acceptInvalidBrowser) {
-        const platform = PlatformPeg.get();
         platform.startUpdater();
 
-        const MatrixChat = sdk.getComponent('structures.MatrixChat');
-        window.matrixChat = ReactDOM.render(
-            <MatrixChat
-                onNewScreen={onNewScreen}
-                makeRegistrationUrl={makeRegistrationUrl}
-                ConferenceHandler={VectorConferenceHandler}
-                config={configJson}
-                realQueryParams={params}
-                startingFragmentQueryParams={fragparts.params}
-                enableGuest={!configJson.disable_guests}
-                onTokenLoginCompleted={onTokenLoginCompleted}
-                initialScreenAfterLogin={getScreenFromLocation(window.location)}
-                defaultDeviceDisplayName={platform.getDefaultDeviceDisplayName()}
-            />,
-            document.getElementById('matrixchat')
-        );
+        // Don't bother loading the app until the config is verified
+        verifyServerConfig().then((newConfig) => {
+            const MatrixChat = sdk.getComponent('structures.MatrixChat');
+            window.matrixChat = ReactDOM.render(
+                <MatrixChat
+                    onNewScreen={onNewScreen}
+                    makeRegistrationUrl={makeRegistrationUrl}
+                    ConferenceHandler={VectorConferenceHandler}
+                    config={newConfig}
+                    realQueryParams={params}
+                    startingFragmentQueryParams={fragparts.params}
+                    enableGuest={!configJson.disable_guests}
+                    onTokenLoginCompleted={onTokenLoginCompleted}
+                    initialScreenAfterLogin={getScreenFromLocation(window.location)}
+                    defaultDeviceDisplayName={platform.getDefaultDeviceDisplayName()}
+                />,
+                document.getElementById('matrixchat'),
+            );
+        }).catch(err => {
+            console.error(err);
+
+            let errorMessage = err.translatedMessage
+                || _t("Unexpected error preparing the app. See console for details.");
+            errorMessage = <span>{errorMessage}</span>;
+
+            // Like the compatibility page, AWOOOOOGA at the user
+            const GenericErrorPage = sdk.getComponent("structures.GenericErrorPage");
+            window.matrixChat = ReactDOM.render(
+                <GenericErrorPage message={errorMessage} title={_t("Your Riot is misconfigured")} />,
+                document.getElementById('matrixchat'),
+            );
+        });
     } else {
         console.error("Browser is missing required features.");
         // take to a different landing page to AWOOOOOGA at the user
-        var CompatibilityPage = sdk.getComponent("structures.CompatibilityPage");
+        const CompatibilityPage = sdk.getComponent("structures.CompatibilityPage");
         window.matrixChat = ReactDOM.render(
             <CompatibilityPage onAccept={function() {
                 if (window.localStorage) window.localStorage.setItem('mx_accepts_unsupported_browser', true);
                 console.log("User accepts the compatibility risks.");
                 loadApp();
             }} />,
-            document.getElementById('matrixchat')
+            document.getElementById('matrixchat'),
         );
     }
 }
@@ -358,18 +399,19 @@ function loadOlm() {
      *
      * We also need to tell the Olm js to look for its wasm file at the same
      * level as index.html. It really should be in the same place as the js,
-     * ie. in the bundle directory, to avoid caching issues, but as far as I
-     * can tell this is completely impossible with webpack.
+     * ie. in the bundle directory, but as far as I can tell this is
+     * completely impossible with webpack. We do, however, use a hashed
+     * filename to avoid caching issues.
      */
     return Olm.init({
-        locateFile: () => 'olm.wasm',
+        locateFile: () => olmWasmPath,
     }).then(() => {
         console.log("Using WebAssembly Olm");
     }).catch((e) => {
-        console.log("Failed to load Olm: trying legacy version");
+        console.log("Failed to load Olm: trying legacy version", e);
         return new Promise((resolve, reject) => {
             const s = document.createElement('script');
-            s.src = 'olm_legacy.js';
+            s.src = 'olm_legacy.js'; // XXX: This should be cache-busted too
             s.onload = resolve;
             s.onerror = reject;
             document.body.appendChild(s);
@@ -402,6 +444,101 @@ async function loadLanguage() {
     } catch (e) {
         console.error("Unable to set language", e);
     }
+}
+
+async function verifyServerConfig() {
+    let validatedConfig;
+    try {
+        console.log("Verifying homeserver configuration");
+
+        // Note: the query string may include is_url and hs_url - we only respect these in the
+        // context of email validation. Because we don't respect them otherwise, we do not need
+        // to parse or consider them here.
+
+        // Note: Although we throw all 3 possible configuration options through a .well-known-style
+        // verification, we do not care if the servers are online at this point. We do moderately
+        // care if they are syntactically correct though, so we shove them through the .well-known
+        // validators for that purpose.
+
+        const config = SdkConfig.get();
+        let wkConfig = config['default_server_config']; // overwritten later under some conditions
+        const serverName = config['default_server_name'];
+        const hsUrl = config['default_hs_url'];
+        const isUrl = config['default_is_url'];
+
+        const incompatibleOptions = [wkConfig, serverName, hsUrl].filter(i => !!i);
+        if (incompatibleOptions.length > 1) {
+            // noinspection ExceptionCaughtLocallyJS
+            throw newTranslatableError(_td(
+                "Invalid configuration: can only specify one of default_server_config, default_server_name, " +
+                "or default_hs_url.",
+            ));
+        }
+        if (incompatibleOptions.length < 1) {
+            // noinspection ExceptionCaughtLocallyJS
+            throw newTranslatableError(_td("Invalid configuration: no default server specified."));
+        }
+
+        if (hsUrl) {
+            console.log("Config uses a default_hs_url - constructing a default_server_config using this information");
+            console.warn(
+                "DEPRECATED CONFIG OPTION: In the future, default_hs_url will not be accepted. Please use " +
+                "default_server_config instead.",
+            );
+
+            wkConfig = {
+                "m.homeserver": {
+                    "base_url": hsUrl,
+                },
+            };
+            if (isUrl) {
+                wkConfig["m.identity_server"] = {
+                    "base_url": isUrl,
+                };
+            }
+        }
+
+        let discoveryResult = null;
+        if (wkConfig) {
+            console.log("Config uses a default_server_config - validating object");
+            discoveryResult = await AutoDiscovery.fromDiscoveryConfig(wkConfig);
+        }
+
+        if (serverName) {
+            console.log("Config uses a default_server_name - doing .well-known lookup");
+            console.warn(
+                "DEPRECATED CONFIG OPTION: In the future, default_server_name will not be accepted. Please " +
+                "use default_server_config instead.",
+            );
+            discoveryResult = await AutoDiscovery.findClientConfig(serverName);
+        }
+
+        validatedConfig = AutoDiscoveryUtils.buildValidatedConfigFromDiscovery(serverName, discoveryResult, true);
+    } catch (e) {
+        const {hsUrl, isUrl, userId} = Lifecycle.getLocalStorageSessionVars();
+        if (hsUrl && userId) {
+            console.error(e);
+            console.warn("A session was found - suppressing config error and using the session's homeserver");
+
+            console.log("Using pre-existing hsUrl and isUrl: ", {hsUrl, isUrl});
+            validatedConfig = await AutoDiscoveryUtils.validateServerConfigWithStaticUrls(hsUrl, isUrl, true);
+        } else {
+            // the user is not logged in, so scream
+            throw e;
+        }
+    }
+
+
+    validatedConfig.isDefault = true;
+
+    // Just in case we ever have to debug this
+    console.log("Using homeserver config:", validatedConfig);
+
+    // Add the newly built config to the actual config for use by the app
+    console.log("Updating SdkConfig with validated discovery information");
+    SdkConfig.add({"validated_server_config": validatedConfig});
+
+    return SdkConfig.get();
 }
 
 loadApp();
