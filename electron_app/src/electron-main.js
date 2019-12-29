@@ -88,7 +88,7 @@ let mainWindow = null;
 global.appQuitting = false;
 
 // It's important to call `path.join` so we don't end up with the packaged asar in the final path.
-const iconFile = `riot.${process.platform === 'win32' ? 'ico' : 'png'}`;
+const iconFile = `rpg.${process.platform === 'win32' ? 'ico' : 'png'}`;
 const iconPath = path.join(__dirname, "..", "..", "img", iconFile);
 const trayConfig = {
     icon_path: iconPath,

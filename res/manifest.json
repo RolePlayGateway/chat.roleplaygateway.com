@@ -1,6 +1,6 @@
 {
-    "name": "Riot - open team collaboration",
-    "short_name": "Riot",
+    "name": "RPG Chat",
+    "short_name": "RPG Chat",
     "display": "standalone",
     "theme_color": "#76CFA6",
     "start_url": "index.html",
@@ -42,11 +42,12 @@
             "density": "4.0"
         }
     ],
-    "related_applications": [
+    "related_applications": [],
+    "//related_applications": [
         {
             "platform": "play",
-            "url": "https://play.google.com/store/apps/details?id=im.vector.alpha",
-            "id": "im.vector.alpha"
+            "url": "https://play.google.com/store/apps/details?id=chat.roleplaygateway.com",
+            "id": "chat.roleplaygateway.com"
         },
         {
             "platform": "itunes",

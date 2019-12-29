@@ -1,10 +1,10 @@
 {
-  "name": "riot-web",
-  "productName": "Riot",
+  "name": "RPG",
+  "productName": "RPG Chat",
   "main": "src/electron-main.js",
-  "version": "1.5.2",
-  "description": "A feature-rich client for Matrix.org",
-  "author": "New Vector Ltd.",
+  "version": "0.2.0-RC3",
+  "description": "Desktop client for RPG Chat",
+  "author": "Fabric, Inc.",
   "dependencies": {
     "auto-launch": "^5.0.1",
     "electron-store": "^2.0.0",

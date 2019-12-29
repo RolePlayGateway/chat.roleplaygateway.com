@@ -21,20 +21,20 @@ yarn build$dev
 cp config.sample.json webapp/
 
 mkdir -p dist
-cp -r webapp riot-$version
+cp -r webapp rpg-chat-$version
 
 # Just in case you have a local config, remove it before packaging
-rm riot-$version/config.json || true
+rm rpg-chat-$version/config.json || true
 
 # if $version looks like semver with leading v, strip it before writing to file
 if [[ ${version} =~ ^v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+(-.+)?$ ]]; then
-    echo ${version:1} > riot-$version/version
+    echo ${version:1} > rpg-chat-$version/version
 else
-    echo ${version} > riot-$version/version
+    echo ${version} > rpg-chat-$version/version
 fi
 
-tar chvzf dist/riot-$version.tar.gz riot-$version
-rm -r riot-$version
+tar chvzf dist/rpg-chat-$version.tar.gz rpg-chat-$version
+rm -r rpg-chat-$version
 
 echo
-echo "Packaged dist/riot-$version.tar.gz"
+echo "Packaged dist/rpg-chat-$version.tar.gz"

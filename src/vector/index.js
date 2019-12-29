@@ -142,7 +142,7 @@ function onNewScreen(screen) {
 function makeRegistrationUrl(params) {
     let url;
     if (window.location.protocol === "vector:") {
-        url = 'https://riot.im/app/#/register';
+        url = 'https://chat.roleplaygateway.com/#/register';
     } else {
         url = (
             window.location.protocol + '//' +
@@ -248,7 +248,7 @@ async function loadApp() {
         const isAndroid = /Android/.test(navigator.userAgent);
         if (isIos || isAndroid) {
             if (document.cookie.indexOf("riot_mobile_redirect_to_guide=false") === -1) {
-                window.location = "mobile_guide/";
+                window.location = "/releases";
                 return;
             }
         }

@@ -19,6 +19,24 @@ const {app, shell, Menu} = require('electron');
 // Menu template from http://electron.atom.io/docs/api/menu/, edited
 const template = [
     {
+        label: '&Account',
+        submenu: [
+            {
+                label: 'Manage',
+                click() { shell.openExternal('https://www.roleplaygateway.com/ucp.php?i=profile&mode=reg_details'); },
+            },
+        ],
+    },
+    {
+        label: '&Universes',
+        submenu: [
+            {
+                label: 'Browse',
+                click() { shell.openExternal('https://www.roleplaygateway.com/universes'); },
+            },
+        ],
+    },
+    {
         label: '&Edit',
         submenu: [
             { role: 'undo' },
@@ -57,8 +75,8 @@ const template = [
         role: 'help',
         submenu: [
             {
-                label: 'Riot Help',
-                click() { shell.openExternal('https://about.riot.im/help'); },
+                label: 'RPG Help',
+                click() { shell.openExternal('https://www.roleplaygateway.com/help-f11.html'); },
             },
         ],
     },

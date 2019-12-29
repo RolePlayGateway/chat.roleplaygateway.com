@@ -1,13 +1,13 @@
 {
-  "name": "riot-web",
-  "productName": "Riot",
+  "name": "@rpg/chat",
+  "productName": "RPG Chat",
   "main": "electron_app/src/electron-main.js",
-  "version": "1.5.2",
-  "description": "A feature-rich client for Matrix.org",
-  "author": "New Vector Ltd.",
+  "version": "0.2.0-RC3",
+  "description": "Desktop client for RPG Chat",
+  "author": "Fabric, Inc.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vector-im/riot-web"
+    "url": "https://github.com/RolePlayGateway/chat.roleplaygateway.com"
   },
   "license": "Apache-2.0",
   "files": [
@@ -36,10 +36,13 @@
     "build:compile": "yarn reskindex && babel --source-maps -d lib src",
     "build:bundle": "cross-env NODE_ENV=production webpack -p --progress --bail --mode production",
     "build:bundle:dev": "webpack --progress --bail --mode development",
-    "build:electron": "yarn clean && yarn build && yarn install:electron && electron-builder -wml --ia32 --x64",
+    "build:electron": "yarn clean && yarn build && yarn install:electron && electron-builder -wml --x64",
+    "build:linux": "yarn clean && yarn build && yarn install:electron && electron-builder -l --x64",
+    "build:macos": "yarn clean && yarn build && yarn install:electron && electron-builder -m --x64",
+    "build:windows": "yarn clean && yarn build && yarn install:electron && electron-builder -w --x64",
     "build:electron:linux": "yarn build && electron-builder -l --x64",
     "build:electron:macos": "yarn build && electron-builder -m --x64",
-    "build:electron:windows": "yarn build && electron-builder -w --ia32 --x64",
+    "build:electron:windows": "yarn build && electron-builder -w --x64",
     "build:react-sdk": "node scripts/yarn-sub.js matrix-react-sdk build",
     "build:js-sdk": "node scripts/yarn-sub.js matrix-js-sdk start:init",
     "build": "yarn build:js-sdk && yarn build:react-sdk && yarn reskindex && yarn build:res && yarn build:bundle",
@@ -154,7 +157,7 @@
     "webpack-dev-server": "^3.1.11"
   },
   "build": {
-    "appId": "im.riot.app",
+    "appId": "com.roleplaygateway.chat",
     "electronVersion": "6.1.2",
     "files": [
       "node_modules/**",
@@ -169,11 +172,20 @@
       "origin_migrator/**/*"
     ],
     "linux": {
-      "target": "deb",
+      "target": [
+        {
+          "target": "deb",
+          "arch": "x64"
+        },
+        {
+          "target": "rpm",
+          "arch": "x64"
+        }
+      ],
       "category": "Network;InstantMessaging;Chat",
-      "maintainer": "support@riot.im",
+      "maintainer": "support@roleplaygateway.com",
       "desktop": {
-        "StartupWMClass": "riot"
+        "StartupWMClass": "rpg"
       }
     },
     "deb": {

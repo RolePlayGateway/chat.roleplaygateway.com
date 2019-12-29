@@ -23,9 +23,10 @@ import { _t } from 'matrix-react-sdk/lib/languageHandler';
 module.exports = () => {
     const brandingConfig = SdkConfig.get().branding;
     let links = [
-        {"text": "blog", "url": "https://medium.com/@RiotChat"},
-        {"text": "twitter", "url": "https://twitter.com/@RiotChat"},
-        {"text": "github", "url": "https://github.com/vector-im/riot-web"},
+        {"text": "git://", "url": "https://github.com/RolePlayGateway"},
+        {"text": "@RolePlayGateway", "url": "https://twitter.com/RolePlayGateway"},
+        {"text": "/universes", "url": "https://medium.com/universes"},
+        {"text": "Home", "url": "https://www.roleplaygateway.com"},
     ];
 
     if (brandingConfig && brandingConfig.authFooterLinks) {
@@ -44,7 +45,6 @@ module.exports = () => {
     return (
         <div className="mx_AuthFooter">
             {authFooterLinks}
-            <a href="https://matrix.org" target="_blank" rel="noopener">{ _t('powered by Matrix') }</a>
         </div>
     );
 };
