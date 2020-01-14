@@ -67,6 +67,7 @@
     "test-multi": "karma start"
   },
   "dependencies": {
+    "@fabric/rpg": "FabricLabs/rpg#prototype",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "bluebird": "^3.5.2",
@@ -197,7 +198,7 @@
     },
     "win": {
       "target": {
-        "target": "squirrel"
+        "target": "nsis"
       }
     },
     "directories": {

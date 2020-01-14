@@ -1,4 +1,4 @@
-<!-- Please report security issues by email to security@matrix.org -->
+<!-- Please report security issues by email to security@roleplaygateway.com -->
 
 <!-- This is a bug report template. By following the instructions below and
 filling out the sections with your information, you will help the us to get all
@@ -38,7 +38,7 @@ For the web app:
 
 - **Browser**: Chrome, Safari, Firefox? which version?
 - **OS**: Windows, macOS, Ubuntu, Arch Linux, etc?
-- **URL**: riot.im/develop / riot.im/app / somewhere else? If a private server, what version of riot-web?
+- **URL**: chat.roleplaygateway.com / somewhere else? If a private server, what version of RPG Chat?
 
 For the desktop app:
 
