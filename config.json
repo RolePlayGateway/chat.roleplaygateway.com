@@ -13,6 +13,10 @@
     "disable_login_language_selector": true,
     "disable_3pid_login": true,
     "brand": "RPG Chat",
+    "branding": {
+        "welcomeBackgroundUrl": "themes/grove/img/backgrounds/moon-gate.jpg",
+        "authHeaderLogoUrl": "themes/grove/img/logos/roleplaygateway.png"
+    },
     "integrations_ui_url": "https://scalar.vector.im/",
     "integrations_rest_url": "https://scalar.vector.im/api",
     "integrations_widgets_urls": [
@@ -25,9 +29,9 @@
     "integrations_jitsi_widget_url": "https://scalar.vector.im/api/widgets/jitsi.html",
     "bug_report_endpoint_url": "https://riot.im/bugreports/submit",
     "defaultCountryCode": "US",
-    "showLabsSettings": false,
+    "showLabsSettings": true,
     "features": {
-        "feature_pinning": "labs",
+        "feature_pinning": "enable",
         "feature_custom_status": "labs",
         "feature_custom_tags": "labs",
         "feature_state_counters": "labs"
