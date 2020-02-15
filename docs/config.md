@@ -22,9 +22,10 @@ For a good example, see https://riot.im/develop/config.json.
      `default_hs_url` is specified. When multiple sources are specified, it is unclear
      which should take priority and therefore the application cannot continue.
    * As of Riot 1.4.0, identity servers are optional. See [Identity servers](#identity-servers) below.
-1. `features`: Lookup of optional features that may be `enable`d, `disable`d, or exposed to the user
-   in the `labs` section of settings.  The available optional experimental features vary from
-   release to release. The available features are described in [labs.md](labs.md).
+1. `features`: Lookup of optional features that may be `enable`d, `disable`d, or
+   exposed to the user in the `labs` section of settings. The available
+   optional experimental features vary from release to release and are [documented](labs.md). The feature flag process is
+   [documented](feature-flags.md) as well.
 1. `showLabsSettings`: Shows the "labs" tab of user settings even when no `features` are enabled
    or present. Useful for getting at settings which may be otherwise hidden.
 1. `brand`: String to pass to your homeserver when configuring email notifications, to let the
@@ -36,6 +37,10 @@ For a good example, see https://riot.im/develop/config.json.
        authentication flows
     1. `authFooterLinks`: a list of links to show in the authentication page footer:
       `[{"text": "Link text", "url": "https://link.target"}, {"text": "Other link", ...}]`
+1. `reportEvent`: Configures the dialog for reporting content to the homeserver
+   admin.
+    1. `adminMessageMD`: An extra message to show on the reporting dialog to
+       mention homeserver-specific policies. Accepts Markdown.
 1. `integrations_ui_url`: URL to the web interface for the integrations server. The integrations
    server is not Riot and normally not your homeserver either. The integration server settings
    may be left blank to disable integrations.
