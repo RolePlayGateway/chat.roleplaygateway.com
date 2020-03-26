@@ -1,5 +1,5 @@
 {
-  "name": "RPG",
+  "name": "rpg-chat",
   "productName": "RPG Chat",
   "main": "src/electron-main.js",
   "version": "0.2.0-RC3-dev",

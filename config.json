@@ -37,7 +37,7 @@
         "feature_state_counters": "labs"
     },
     "default_federate": true,
-    "default_theme": "dark",
+    "default_theme": "rpg",
     "roomDirectory": {
         "servers": [
             "roleplaygateway.com",
