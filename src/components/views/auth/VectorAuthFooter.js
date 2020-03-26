@@ -35,7 +35,7 @@ const VectorAuthFooter = () => {
     const authFooterLinks = [];
     for (const linkEntry of links) {
         authFooterLinks.push(
-            <a href={linkEntry.url} key={linkEntry.text} target="_blank" rel="noopener">
+            <a href={linkEntry.url} key={linkEntry.text} target="_blank" rel="noreferrer noopener">
                 {linkEntry.text}
             </a>,
         );

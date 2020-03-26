@@ -37,16 +37,18 @@
     "reskindex:watch-react": "node scripts/yarn-sub.js matrix-react-sdk reskindex:watch",
     "clean": "rimraf lib webapp electron_app/dist",
     "build": "yarn clean && yarn build:genfiles && yarn build:compile && yarn build:types && yarn build:bundle",
+    "build-stats": "yarn clean && yarn build:genfiles && yarn build:compile && yarn build:types && yarn build:bundle-stats",
     "build:res": "node scripts/copy-res.js",
     "build:genfiles": "yarn reskindex && yarn build:res",
     "build:modernizr": "modernizr -c .modernizr.json -d src/vector/modernizr.js",
-    "build:compile": "babel -d lib --verbose --extensions \".ts,.js\" src",
+    "build:compile": "babel -d lib --verbose --extensions \".ts,.js,.tsx\" src",
     "build:bundle": "cross-env NODE_ENV=production webpack -p --progress --bail --mode production",
+    "build:bundle-stats": "cross-env NODE_ENV=production webpack -p --progress --bail --mode production --json > webpack-stats.json",
     "build:electron": "yarn build && yarn install:electron && electron-builder -wml --ia32 --x64",
-    "build:linux": "yarn clean && yarn build && electron-builder -l --x64",
-    "build:macos": "yarn clean && yarn build && electron-builder -m --x64",
-    "build:windows": "yarn clean && yarn build && electron-builder -w --x64",
-    "build:types": "tsc --emitDeclarationOnly",
+    "build:linux": "yarn build && electron-builder -l --x64",
+    "build:macos": "yarn build && electron-builder -m --x64",
+    "build:windows": "yarn build && electron-builder -w --x64",
+    "build:types": "tsc --emitDeclarationOnly --jsx react",
     "install:electron": "electron-builder install-app-deps",
     "dist": "scripts/package.sh",
     "sample": "yarn run build && ./node_modules/.bin/ecstatic webapp",
@@ -57,7 +59,7 @@
     "lint": "yarn lint:types && yarn lint:ts && yarn lint:js && yarn lint:style",
     "lint:js": "eslint src",
     "lint:ts": "echo 'We don't actually have a typescript linter at this layer because tslint is being removed from our stack. Presumably your TS is fine.'",
-    "lint:types": "tsc --noEmit",
+    "lint:types": "tsc --noEmit --jsx react",
     "lint:style": "stylelint 'res/css/**/*.scss'",
     "test": "jest"
   },
@@ -67,7 +69,6 @@
     "bluebird": "^3.5.2",
     "browser-request": "^0.3.3",
     "favico.js": "^0.3.10",
-    "gemini-scrollbar": "github:matrix-org/gemini-scrollbar#91e1e566",
     "gfm.css": "^1.1.2",
     "highlight.js": "^9.13.1",
     "matrix-js-sdk": "matrix-org/matrix-js-sdk#develop",
@@ -98,7 +99,7 @@
     "@babel/preset-typescript": "^7.7.4",
     "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.7.6",
-    "@types/react": "^16.9.17",
+    "@types/react": "16.9",
     "@types/react-dom": "^16.9.4",
     "autoprefixer": "^9.7.3",
     "babel-eslint": "^10.0.3",
@@ -158,7 +159,7 @@
   },
   "build": {
     "appId": "com.roleplaygateway.chat",
-    "electronVersion": "7.1.12",
+    "electronVersion": "7.1.14",
     "files": [
       "node_modules/**",
       "src/**"
@@ -203,7 +204,15 @@
       "output": "electron_app/dist",
       "app": "electron_app"
     },
-    "afterSign": "scripts/electron_afterSign.js"
+    "afterSign": "scripts/electron_afterSign.js",
+    "protocols": [
+      {
+        "name": "riot",
+        "schemes": [
+          "riot"
+        ]
+      }
+    ]
   },
   "jest": {
     "modulePathIgnorePatterns": [
