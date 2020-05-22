@@ -1,11 +1,11 @@
 {
     "default_server_config": {
         "m.homeserver": {
-            "base_url": "https://chat.roleplaygateway.com",
-            "server_name": "roleplaygateway.com"
+            "base_url": "https://chat.fabric.pub",
+            "server_name": "fabric.pub"
         },
         "m.identity_server": {
-            "base_url": "https://chat.roleplaygateway.com"
+            "base_url": "https://chat.fabric.pub"
         }
     },
     "disable_custom_urls": true,
@@ -37,15 +37,15 @@
         "feature_state_counters": "labs"
     },
     "default_federate": true,
-    "default_theme": "rpg",
+    "default_theme": "dark",
     "roomDirectory": {
         "servers": [
-            "roleplaygateway.com",
+            "chat.fabric.pub",
             "fabric.pub",
             "verse.im"
         ]
     },
-    "welcomeUserId": "@hal:roleplaygateway.com",
+    "welcomeUserId": "@hal:fabric.pub",
     "@piwik": {
         "url": "https://piwik.riot.im/",
         "whitelistedHSUrls": ["https://matrix.org"],

@@ -2,7 +2,7 @@
   "name": "@rpg/chat",
   "productName": "RPG Chat",
   "main": "electron_app/src/electron-main.js",
-  "version": "0.2.0-RC3",
+  "version": "0.2.0-RC4",
   "description": "Desktop client for RPG Chat",
   "author": "Fabric, Inc.",
   "repository": {
@@ -195,7 +195,7 @@
     },
     "win": {
       "target": {
-        "target": "squirrel"
+        "target": "nsis"
       },
       "sign": "scripts/electron_winSign"
     },

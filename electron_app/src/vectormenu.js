@@ -39,15 +39,17 @@ const template = [
     {
         label: '&Edit',
         submenu: [
-            { role: 'undo' },
-            { role: 'redo' },
+            { label: 'Undo', accelerator: 'CommandOrControl+Z', selector: 'undo:' },
+            { label: 'Redo', accelerator: 'Shift+CommandOrControl+Z', selector: 'redo:' },
             { type: 'separator' },
-            { role: 'cut' },
-            { role: 'copy' },
-            { role: 'paste' },
-            { role: 'pasteandmatchstyle' },
-            { role: 'delete' },
-            { role: 'selectall' },
+            { label: 'Cut', accelerator: 'CommandOrControl+X', selector: 'cut:' },
+            { label: 'Copy', accelerator: 'CommandOrControl+C', selector: 'copy:' },
+            { label: 'Paste', accelerator: 'CommandOrControl+V', selector: 'paste:' },
+            {
+              label: 'Select All',
+              accelerator: 'CommandOrControl+A',
+              selector: 'selectAll:'
+            }
         ],
     },
     {
@@ -56,7 +58,7 @@ const template = [
             { type: 'separator' },
             { role: 'resetzoom' },
             { role: 'zoomin', accelerator: 'CommandOrControl+=' },
-            { role: 'zoomout' },
+            { role: 'zoomout', accelerator: 'CommandOrControl+-' },
             { type: 'separator' },
             {
                 label: 'Preferences',

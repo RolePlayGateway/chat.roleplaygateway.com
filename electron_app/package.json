@@ -1,9 +1,9 @@
 {
-  "name": "rpg-chat",
-  "productName": "RPG Chat",
+  "name": "grove",
+  "productName": "Grove",
   "main": "src/electron-main.js",
-  "version": "0.2.0-RC3-dev",
-  "description": "Desktop client for RPG Chat",
+  "version": "0.1.0-RC3-dev",
+  "description": "Where we gather.",
   "author": "Fabric, Inc.",
   "dependencies": {
     "auto-launch": "^5.0.1",
