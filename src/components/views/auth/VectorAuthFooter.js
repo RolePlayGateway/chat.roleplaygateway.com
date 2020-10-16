@@ -22,9 +22,9 @@ import { _t } from 'matrix-react-sdk/src/languageHandler';
 const VectorAuthFooter = () => {
     const brandingConfig = SdkConfig.get().branding;
     let links = [
-        {"text": "git://", "url": "https://github.com/FabricLabs/fabric"},
-        {"text": "@FabricProtocol", "url": "https://twitter.com/FabricProtocol"},
-        {"text": "Home", "url": "https://fabric.pub"},
+        {"text": "git://", "url": "https://github.com/RolePlayGateway/rpg"},
+        {"text": "@RolePlayGateway", "url": "https://twitter.com/RolePlayGateway"},
+        {"text": "Home", "url": "https://www.roleplaygateway.com/"},
     ];
 
     if (brandingConfig && brandingConfig.authFooterLinks) {

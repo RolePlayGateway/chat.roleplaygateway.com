@@ -1,14 +1,14 @@
 {
-  "name": "riot-web",
-  "productName": "Riot",
-  "version": "1.7.3",
-  "description": "A feature-rich client for Matrix.org",
-  "author": "New Vector Ltd.",
+  "name": "rpg-chat",
+  "productName": "RPG Chat",
+  "version": "0.1.0-RC5",
+  "description": "Your gateway to the virtual world.",
+  "author": "Quill, Inc.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vector-im/riot-web"
+    "url": "https://github.com/RolePlayGateway/rpg-chat"
   },
-  "license": "Apache-2.0",
+  "license": "MIT",
   "files": [
     "lib",
     "res",

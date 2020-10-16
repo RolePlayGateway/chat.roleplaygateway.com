@@ -6,7 +6,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const webpack = require("webpack");
 
 let og_image_url = process.env.RIOT_OG_IMAGE_URL;
-if (!og_image_url) og_image_url = 'https://chat.fabric.pub/themes/grove/img/logos/grove-thumbnail.png';
+if (!og_image_url) og_image_url = 'https://chat.roleplaygateway.com/themes/rpg/img/logos/roleplaygateway-square.png';
 
 module.exports = (env, argv) => {
     if (process.env.CI_PACKAGE) {

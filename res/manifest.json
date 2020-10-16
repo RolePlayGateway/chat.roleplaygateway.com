@@ -1,6 +1,6 @@
 {
-    "name": "Grove",
-    "short_name": "Grove",
+    "name": "RPG Chat",
+    "short_name": "RPG Chat",
     "display": "standalone",
     "theme_color": "#5f8d70",
     "start_url": "index.html",
